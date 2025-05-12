@@ -52,10 +52,6 @@ Terminal:
 Red Wine Epoch 100/100 | MSE: 26.30 | RMSE: 5.13
 White Wine Epoch 100/100 | MSE: 29.91 | RMSE: 5.45
 
-yaml
-Copy
-Edit
-
 Chart:
 
 - RMSE and MSE plotted side-by-side
