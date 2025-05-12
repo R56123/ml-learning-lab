@@ -20,7 +20,7 @@ Inspired by Google's Machine Learning Crash Course.
 
 ## 📁 Folder Structure
 
-<pre><code>``` ml-learning-lab/ │ ├── data/ │ └── student_scores.csv # Small dataset (hours studied vs score) │ ├── experiments/ │ ├── experiment_1.py # High learning rate test │ └── experiment_2.py # Low learning rate test │ ├── model_utils.py # Core ML functions (train, plot, evaluate) ├── main.py # Base model runner ├── requirements.txt # Python dependencies └── README.md # You're here! ```</code></pre>
+<pre><code>```txt ml-learning-lab/ ├── data/ │ └── student_scores.csv # Small dataset (hours studied vs score) ├── experiments/ │ ├── experiment_1.py # High learning rate test │ └── experiment_2.py # Low learning rate test ├── model_utils.py # Core ML functions (train, plot, evaluate) ├── main.py # Base model runner ├── requirements.txt # Python dependencies └── README.md # You're here! ```</code></pre>
 ---
 
 ## 🚀 Getting Started
