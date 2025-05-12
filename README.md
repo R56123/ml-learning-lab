@@ -36,10 +36,6 @@ ml-learning-lab/
 ├── requirements.txt # Python dependencies
 └── README.md # You're here!
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 🧪 Datasets Used
