@@ -1,59 +1,74 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from tqdm import tqdm
-from sklearn.preprocessing import StandardScaler
-import time
+# Here I import the required Libraries for the ML.
+import numpy as np # For mathematical operations (Arrays, dot product etc.)
+import pandas as pd # For loading and working with csv files.
+import matplotlib.pyplot as plt # For creating charts and plots.
+from tqdm import tqdm # For showing the progress bar in the terminal.
+from sklearn.preprocessing import StandardScaler # For scaling Input data.
+import time # Used to add delays in training to visualise the progress bar. 
 
 def load_data(filepath):
+    # Here I load the dataset from a CSV file using a semi-colon as separator.
     data = pd.read_csv(filepath, sep=';')
-    X = data.drop('quality', axis=1).values
-    y = data['quality'].values.reshape(-1, 1)
 
+    # Separate input features (X) and the output (y)
+    # (X) contains all columns except 'quality'
+    # (y) is the quality column (the value we want to predict)
+    X = data.drop('quality', axis=1).values
+    y = data['quality'].values.reshape(-1, 1) # Here I reshape it into a column vector.
+
+# Scale X values using standardisation (mean=0, standard deviation=1)
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-
+# Here I return the scaled inputs (X_scaled) and target (y)
     return X_scaled, y
 
 
 # Predict using weights and bias
 def predict(X, weight, bias):
+    # Return predicted data values using the formula: y = Xw + b
     return X.dot(weight) + bias
 
 # Evaluate error between predictions and actual labels
 def evaluate_model(y_true, y_pred):
+    # Here I calculate the Mean Squared Error: An average of squared differences
     mse = np.mean((y_true - y_pred) ** 2)
+    # Calculate the RMSE: square root of MSE
     rmse = np.sqrt(mse)
+    # Return both error values
     return mse, rmse
 
 # Plot regression line vs actual data
 def plot_regression(X, y, y_pred):
+    # Here I draw the actual scores via blue dots
     plt.scatter(X, y, color='blue', label='Actual Scores')
+    # Here I draw the predicted line as a red line. 
     plt.plot(X, y_pred, color='red', label='Predicted Line')
+    # Here I add labels and a title to the graph.
     plt.xlabel("Hours Studied")
     plt.ylabel("Score")
     plt.legend()
     plt.title("Linear Regression Fit")
     plt.grid(True)
+    # Display the graph window
     plt.show()
 
 def train_model(X, y, learning_rate=0.001, epochs=100, label="Model"):
-    n_samples = X.shape[0]
-    weight = np.random.randn(X.shape[1], 1)
-    bias = 0
-    rmse_history = []
-    mse_history = []
+    n_samples = X.shape[0] # Here I get the number of rows (samples)
+    weight = np.random.randn(X.shape[1], 1) # Begin with random weights
+    bias = 0 # Start with bias 0
+    rmse_history = [] # A list to save RSME from each training round
+    mse_history = [] # A list to save MSE from each training round
 
-    progress = tqdm(range(1, epochs + 1), desc=f"{label} Training", colour='green', ncols=100)
+    progress = tqdm(range(1, epochs + 1), desc=f"{label} Training", colour='green', ncols=100) # Here I setup a clean progress bar.
 
     for epoch in progress:
         time.sleep(0.05)  # adds 50 milliseconds delay per epoch
-        y_pred = predict(X, weight, bias)
-        dw = -(2 / n_samples) * np.dot(X.T, (y - y_pred))
-        db = -(2 / n_samples) * np.sum(y - y_pred)
+        y_pred = predict(X, weight, bias) # Here I predict using current weights and bias
+        dw = -(2 / n_samples) * np.dot(X.T, (y - y_pred)) # Gradient for weights
+        db = -(2 / n_samples) * np.sum(y - y_pred) # Gradient for bias.
 
-        weight -= learning_rate * dw
-        bias -= learning_rate * db
+        weight -= learning_rate * dw # Adjust weights 
+        bias -= learning_rate * db # Adjust bias
 
         mse, rmse = evaluate_model(y, y_pred)
         mse_history.append(mse)
