@@ -70,14 +70,17 @@ def train_model(X, y, learning_rate=0.001, epochs=100, label="Model"):
         weight -= learning_rate * dw # Adjust weights 
         bias -= learning_rate * db # Adjust bias
 
-        mse, rmse = evaluate_model(y, y_pred)
+        mse, rmse = evaluate_model(y, y_pred) # Here I evaluate the current performance.
+
+        # I then store the current errors in the tracking history.
         mse_history.append(mse)
         rmse_history.append(rmse)
 
+        # Here I print a detailed log in the terminal for every 10 epochs, plus the first and final epoch.
         if epoch % 10 == 0 or epoch == 1 or epoch == epochs:
             tqdm.write(f"{label} Epoch {epoch:3d}/{epochs} | MSE: {mse:.4f} | RMSE: {rmse:.4f}")
-
+        # Here I simply update the progress bar label for every 5 epochs with the current RSME
         if epoch % 5 == 0:
             progress.set_description(f"{label} Epoch {epoch:3d} | RMSE: {rmse:.2f}")
-
+        # Here I then return the final trained weights, bias and history of performance.
     return weight, bias, rmse_history, mse_history
