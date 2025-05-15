@@ -8,12 +8,12 @@ from model_utils import load_data, train_model, predict, evaluate_model, plot_re
 # Load Dataset
 X, y = load_data("data/student_scores.csv")
 
-# Use a high learning rate 
+# Use a Low learning rate 
 learning_rate = 0.001
-epochs = 100
+epochs = 1000
 
 print(f"\n Experiment 2: Low Learning Rate = {learning_rate}\n")
-weight, bias = train_model(X, y, learning_rate=learning_rate, epochs=epochs)
+weight, bias = train_model(X, y, learning_rate=learning_rate, epochs=epochs, return_history=False)
 
 # Predictions 
 

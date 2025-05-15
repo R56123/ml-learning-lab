@@ -7,20 +7,35 @@ from sklearn.preprocessing import StandardScaler # For scaling Input data.
 import time # Used to add delays in training to visualise the progress bar. 
 
 def load_data(filepath):
-    # Here I load the dataset from a CSV file using a semi-colon as separator.
-    data = pd.read_csv(filepath, sep=';')
+   # Automatically detect delimiter based on file type
+    if "student" in filepath.lower():
+        data = pd.read_csv(filepath)  # uses comma
+    else:
+        data = pd.read_csv(filepath, sep=';')  # wine dataset
 
-    # Separate input features (X) and the output (y)
-    # (X) contains all columns except 'quality'
-    # (y) is the quality column (the value we want to predict)
-    X = data.drop('quality', axis=1).values
-    y = data['quality'].values.reshape(-1, 1) # Here I reshape it into a column vector.
+    data.columns = data.columns.str.strip()  # clean up header spaces
 
-# Scale X values using standardisation (mean=0, standard deviation=1)
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-# Here I return the scaled inputs (X_scaled) and target (y)
-    return X_scaled, y
+
+    # ✅ Wine dataset logic
+    if 'quality' in data.columns:
+        X = data.drop('quality', axis=1).values
+        y = data['quality'].values.reshape(-1, 1)
+
+        # Standardize wine features
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
+        return X_scaled, y
+
+    # ✅ Student dataset logic
+    elif 'Hours' in data.columns and 'Scores' in data.columns:
+        X = data[['Hours']].values  # use only the Hours column
+        y = data[['Scores']].values  # prediction target
+        return X, y
+
+    # ❌ Unsupported format
+    else:
+        raise ValueError("Unsupported dataset format. Expected columns: 'quality' or 'Hours' & 'Scores'.")
+
 
 
 # Predict using weights and bias
@@ -52,7 +67,7 @@ def plot_regression(X, y, y_pred):
     # Display the graph window
     plt.show()
 
-def train_model(X, y, learning_rate=0.001, epochs=100, label="Model"):
+def train_model(X, y, learning_rate=0.001, epochs=100, label="Model", return_history=True):
     n_samples = X.shape[0] # Here I get the number of rows (samples)
     weight = np.random.randn(X.shape[1], 1) # Begin with random weights
     bias = 0 # Start with bias 0
@@ -62,7 +77,7 @@ def train_model(X, y, learning_rate=0.001, epochs=100, label="Model"):
     progress = tqdm(range(1, epochs + 1), desc=f"{label} Training", colour='green', ncols=100) # Here I setup a clean progress bar.
 
     for epoch in progress:
-        time.sleep(0.05)  # adds 50 milliseconds delay per epoch
+        #time.sleep(0.01)  # adds 50 milliseconds delay per epoch
         y_pred = predict(X, weight, bias) # Here I predict using current weights and bias
         dw = -(2 / n_samples) * np.dot(X.T, (y - y_pred)) # Gradient for weights
         db = -(2 / n_samples) * np.sum(y - y_pred) # Gradient for bias.
@@ -83,4 +98,7 @@ def train_model(X, y, learning_rate=0.001, epochs=100, label="Model"):
         if epoch % 5 == 0:
             progress.set_description(f"{label} Epoch {epoch:3d} | RMSE: {rmse:.2f}")
         # Here I then return the final trained weights, bias and history of performance.
-    return weight, bias, rmse_history, mse_history
+    if return_history:
+        return weight, bias, rmse_history, mse_history
+    else: 
+        return weight, bias

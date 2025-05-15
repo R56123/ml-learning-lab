@@ -10,10 +10,10 @@ X, y = load_data("data/student_scores.csv")
 
 # Use a high learning rate 
 learning_rate = 0.1
-epochs = 100
+epochs = 1000
 
 print(f"\n Experiment 1: High Learning Rate = {learning_rate}\n")
-weight, bias = train_model(X, y, learning_rate=learning_rate, epochs=epochs)
+weight, bias = train_model(X, y, learning_rate=learning_rate, epochs=epochs, return_history=False)
 
 # Predictions 
 
@@ -25,5 +25,4 @@ mse, rmse = evaluate_model(y, y_pred)
 print(f"\n Final Evaluation:\nMSE = {mse:.2f}, RSME = {rmse:.2f}")
 
 # Visualise
-
 plot_regression(X, y, y_pred)

@@ -11,7 +11,7 @@ X, y = load_data("data/winequality-white.csv")
 # Train
 learning_rate = 0.001
 epochs = 100
-weight, bias, rmse_history = train_model(X, y, learning_rate=learning_rate, epochs=epochs)
+weight, bias, rmse_history, mse_history = train_model(X, y, learning_rate=learning_rate, epochs=epochs)
 
 # Evaluate
 y_pred = predict(X, weight, bias)

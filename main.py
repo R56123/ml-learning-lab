@@ -9,7 +9,7 @@ X, y = load_data("data/student_scores.csv")
 # Here I pass the data to the training function, which returns the learned weight and bias. 
 # Learning_rate controls how big each step is while training
 # epochs defines how many times the model sees the full dataset
-weight, bias = train_model(X, y, learning_rate=0.03, epochs=100)
+weight, bias = train_model(X, y, learning_rate=0.001, epochs=100)
 
 # Step 3: Make predictions
 # I then use the trained weight and bias to predict the scores based on hours studied
