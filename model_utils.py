@@ -37,7 +37,6 @@ def load_data(filepath):
         raise ValueError("Unsupported dataset format. Expected columns: 'quality' or 'Hours' & 'Scores'.")
 
 
-
 # Predict using weights and bias
 def predict(X, weight, bias):
     # Return predicted data values using the formula: y = Xw + b
@@ -77,7 +76,7 @@ def train_model(X, y, learning_rate=0.001, epochs=100, label="Model", return_his
     progress = tqdm(range(1, epochs + 1), desc=f"{label} Training", colour='green', ncols=100) # Here I setup a clean progress bar.
 
     for epoch in progress:
-        #time.sleep(0.01)  # adds 50 milliseconds delay per epoch
+        time.sleep(0.01)  # adds 50 milliseconds delay per epoch
         y_pred = predict(X, weight, bias) # Here I predict using current weights and bias
         dw = -(2 / n_samples) * np.dot(X.T, (y - y_pred)) # Gradient for weights
         db = -(2 / n_samples) * np.sum(y - y_pred) # Gradient for bias.
